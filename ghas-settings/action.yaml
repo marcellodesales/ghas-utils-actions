@@ -1,0 +1,32 @@
+name: ghas-settings
+description: 'Enable GHAS settings for a given org'
+branding:
+  icon: 'scan'
+  color: 'blue'
+
+inputs:
+  github-organization:
+    description: 'The Github Organization to enable'
+    required: true
+
+  github-pat-token:
+    description: 'Org PAT with permissions to the ORG management'
+    required: true
+
+  github-ghas-file:
+    description: 'The GHAS settings in base64 format'
+    required: true
+
+outputs:
+  enablement-results:
+    description: 'The results of enabling GHAS'
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.github-organization }}
+    - ${{ inputs.github-pat-token }}
+    - --verbose
+    - --org-security-settings
+    - ${{ inputs.github-ghas-file }}
